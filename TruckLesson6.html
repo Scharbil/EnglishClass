@@ -155,19 +155,17 @@ header {
     </div>
     
 <div id="text-to-read" style="border-top: 1px solid #eee; padding-top: 10px;">
-    <p>The inspector walked around the vehicle, checking the blue and white labels. "Good afternoon," he said. "Since you are hauling water for the city, I need to verify that your <b>Potable Water</b> certification is up to date. We have strict hygiene standards to prevent contamination."</p>
+    <p>The officer signaled the truck to pull over and immediately pointed to a puddle forming under the rear chassis. "Sir, step out of the vehicle," the inspector commanded. "It looks like you have a major <b>Leak</b> coming from the main vessel. We can't have you losing cargo on the highway."</p>
 
-    <p>The driver nodded and showed the intake connection. "I’ve just completed the <b>Sanitization</b> of the tank this morning. I’ve ensured that the hoses are food-grade and that there isn't a single <b>Leak</b> in the coupling, as even a small drip could allow bacteria to enter the system."</p>
+    <p>The driver climbed down and smiled calmly. "Don't worry, Officer. That’s not a structural failure. I just finished a dust control job, and that's just residual water dripping from the <b>Spray Bar</b>. If it were a real <b>Leak</b>, you’d see a drop in pressure on my <b>Water Pump</b> gauges."</p>
 
-    <p>The officer climbed a small ladder to look at the top of the vessel. "The <b>Manhole</b> seal looks airtight, which is good. I’m also checking the <b>Air Vent</b>; if it gets clogged, the vacuum created while you discharge the water could actually cause the tank to collapse inward."</p>
+    <p>The inspector looked closer at the plumbing. "Fair enough, but I still need to verify your <b>Potable Water</b> certification. Even if the tank is solid, I must ensure your <b>Sanitization</b> logs are up to date to prevent any public health risks."</p>
 
-    <p>"I agree, Officer," the driver replied. "I also had the maintenance crew perform a <b>Leak Test</b> on the main gaskets yesterday. We want to make sure the structural integrity is perfect, especially since we'll be using the high-pressure <b>Water Pump</b> today."</p>
+    <p>The officer then climbed the ladder to check the top. "The <b>Manhole</b> covers are sealed, but your <b>Air Vent</b> seems a bit dusty. Make sure it stays clear; if it blocks while you are discharging, the vacuum could collapse this tank in seconds. Have you performed a <b>Leak Test</b> recently?"</p>
 
-    <p>The inspector then asked about the load distribution. "This is a high-capacity tank. Do you have a <b>Bulkhead</b> to keep the drinking water separate from the non-potable section?" The driver explained, "It's one large tank with a single <b>Bulkhead</b>, but I have heavy-duty <b>Baffles</b> to stop the water from surging when I'm driving through city traffic."</p>
+    <p>"Last Monday, Officer," the driver replied. "The technician checked every <b>Bulkhead</b> and confirmed the internal integrity. It’s a specialized tank; the <b>Baffles</b> are welded specifically to handle the weight shift of the water during emergency braking."</p>
 
-    <p>The officer knelt down to look at the rear of the truck. "The <b>Sump</b> area where you drain the sediment looks very clean. Now, I need to see the distribution system in action. Please activate the <b>Spray Bar</b> for me."</p>
-
-    <p>The driver engaged the controls, and water sprayed evenly from the rear nozzles. "The flow is consistent and the pressure is steady," the inspector noted. "When you're delivering thousands of gallons, a reliable pump and spray system is essential. You’ve maintained this water tanker perfectly. Drive safely!"</p>
+    <p>The inspector knelt to check the lowest point of the tanker. "The <b>Sump</b> area is dry, so you’re right, the main tank is fine. It was just the hose residue. Everything looks good. Keep those logs updated and watch that vent. Drive safely!"</p>
 </div>
 </div>
 
@@ -311,50 +309,50 @@ const WM_DATA = [
     { sentence: "The rear-mounted pipe used to distribute water evenly over a road surface for dust control is the ______", answer: "Spray Bar" }
 ];
 const SO_DATA = [
+    { segments: ["The", "officer", "mistook", "the", "dripping", "hose", "for", "a", "Leak"] },
+    { segments: ["That", "is", "just", "residual", "water", "from", "the", "Spray", "Bar"] },
+    { segments: ["Check", "the", "Water", "Pump", "gauges", "to", "verify", "the", "pressure"] },
     { segments: ["I", "need", "to", "verify", "your", "Potable", "Water", "certification"] },
-    { segments: ["I", "just", "completed", "the", "Sanitization", "of", "the", "tank"] },
-    { segments: ["Hoses", "must", "be", "food-grade", "to", "prevent", "any", "Leak"] },
-    { segments: ["The", "Manhole", "seal", "must", "be", "airtight", "and", "secure"] },
-    { segments: ["Check", "the", "Air", "Vent", "to", "prevent", "a", "vacuum", "collapse"] },
-    { segments: ["The", "crew", "performed", "a", "Leak", "Test", "on", "the", "gaskets"] },
-    { segments: ["Use", "the", "Bulkhead", "to", "separate", "the", "water", "sections"] },
-    { segments: ["Baffles", "stop", "the", "water", "from", "surging", "during", "transit"] },
-    { segments: ["The", "Sump", "area", "looks", "clean", "and", "free", "of", "sediment"] },
-    { segments: ["Please", "activate", "the", "Spray", "Bar", "for", "the", "inspector"] }
+    { segments: ["The", "Sanitization", "logs", "must", "be", "up", "to", "date"] },
+    { segments: ["A", "clogged", "Air", "Vent", "can", "cause", "a", "vacuum", "collapse"] },
+    { segments: ["The", "technician", "confirmed", "the", "integrity", "of", "every", "Bulkhead"] },
+    { segments: ["Baffles", "are", "welded", "to", "handle", "heavy", "weight", "shifts"] },
+    { segments: ["The", "Sump", "area", "is", "dry", "and", "the", "tank", "is", "fine"] },
+    { segments: ["Keep", "your", "logs", "updated", "and", "watch", "that", "vent"] }
 ];
 const CAT_DATA = [
     { 
-        category: "Officer Commands", 
+        category: "Inspection Findings", 
         items: [
-            "Verify Potable Water certification", 
-            "Activate the Spray Bar", 
-            "Inspect the Manhole seal", 
-            "Check for sediment in the Sump", 
-            "Verify Sanitization records"
+            "Residual water dripping", 
+            "Dusty Air Vent", 
+            "Dry Sump area", 
+            "Airtight Manhole seal", 
+            "Consistent spray pressure"
         ] 
     }, 
     { 
-        category: "Water Tanker Issues", 
+        category: "Technical Components", 
         items: [
-            "Bacterial Contamination", 
-            "Vacuum Collapse", 
-            "Clogged Air Vent", 
-            "Non-food grade hoses", 
-            "Faulty Water Pump"
+            "Potable Water Tank", 
+            "Water Pump Gauges", 
+            "Internal Baffles", 
+            "Food-grade Hoses", 
+            "Rear Spray Bar"
         ] 
     }
 ];
 const TF_DATA = [
-    { text: "The officer needed to verify the Potable Water certification for hygiene standards.", answer: true }, 
-    { text: "The driver used standard industrial hoses that were not food-grade.", answer: false },
-    { text: "The Air Vent is critical to prevent the tank from collapsing inward during discharge.", answer: true },
-    { text: "The maintenance crew performed a Leak Test on the main gaskets yesterday.", answer: true },
-    { text: "Baffles are installed to prevent the water from surging while driving in traffic.", answer: true },
-    { text: "The tanker described in the text has five separate internal Bulkheads.", answer: false },
-    { text: "The Sump area was found to be clean and free of sediment during inspection.", answer: true },
-    { text: "The Spray Bar failed to distribute water evenly when it was activated.", answer: false },
-    { text: "Sanitization of the tank is performed to kill bacteria and ensure water safety.", answer: true },
-    { text: "The inspector was satisfied because the water pump and spray system were reliable.", answer: true }
+    { text: "The officer initially thought the truck had a major structural Leak.", answer: true }, 
+    { text: "The puddle was actually caused by residual water from the Spray Bar.", answer: true },
+    { text: "The driver uses his Water Pump gauges to monitor the tank's integrity.", answer: true },
+    { text: "The inspector didn't care about the Sanitization logs because it was just water.", answer: false },
+    { text: "A dusty or clogged Air Vent is a serious risk for vacuum collapse.", answer: true },
+    { text: "The technician found structural cracks during last Monday's Leak Test.", answer: false },
+    { text: "The Baffles in this tank are not designed for emergency braking.", answer: false },
+    { text: "The Sump area was found to be dry, proving the main tank was secure.", answer: true },
+    { text: "The officer allowed the driver to continue after clarifying the dripping issue.", answer: true },
+    { text: "Potable water transport has fewer hygiene standards than industrial water.", answer: false }
 ];
 
     function switchTab(id) {
