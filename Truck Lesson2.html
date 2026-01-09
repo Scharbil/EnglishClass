@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English for Truckers | British Council Style</title>
+    <style>
+        :root {
+            --bc-blue: #003366;
+            --bc-light-blue: #e9f2f9;
+            --bc-grey-bg: #f2f2f2;
+            --success: #28a745;
+            --error: #dc3545;
+            --answer-blue: #007bff;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .main-container {
+            max-width: 850px;
+            background: white;
+            margin: 0 auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* --- ESTILO PARA EL CROP DEL 50% SUPERIOR --- */
+        .hero-container {
+            width: 100%;
+            height: 500px; /* Altura ajustada para el recorte */
+            overflow: hidden;
+            display: block;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top; /* Mantiene la parte superior */
+            display: block;
+        }
+
+        header {
+            padding: 25px 40px;
+            border-bottom: 4px solid var(--bc-blue);
+        }
+
+        .content { padding: 30px 40px; }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--bc-blue);
+            margin-bottom: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        /* WORD POOL STYLE */
+        .word-pool {
+            background-color: #f8f9fa;
+            border: 2px dashed #ccc;
+            padding: 15px;
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-radius: 8px;
+        }
+
+        .word-card {
+            background: white;
+            padding: 10px 20px;
+            border: 1px solid var(--bc-blue);
+            border-radius: 25px;
+            cursor: pointer;
+            color: var(--bc-blue);
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .word-card.selected { background-color: var(--bc-blue); color: white; box-shadow: 0 0 8px rgba(0,51,102,0.5); }
+        .word-card.used { opacity: 0.3; cursor: default; }
+
+        /* GAP BOX STYLE */
+        .gap-box {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            height: 38px;
+            background-color: var(--bc-grey-bg);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--bc-blue);
+            margin: 5px;
+            padding: 0 10px;
+            vertical-align: middle;
+            transition: background-color 0.2s;
+        }
+
+        .gap-container {
+            line-height: 3;
+            font-size: 1.1rem;
+        }
+
+        /* READING BOX */
+        .reading-box {
+            background-color: var(--bc-light-blue);
+            padding: 25px;
+            border-radius: 8px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--bc-blue);
+        }
+
+        /* TRUE / FALSE */
+        .tf-row {
+            margin-bottom: 15px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* FEEDBACK COLORS */
+        .correct { background-color: #d4edda !important; border-color: var(--success) !important; color: var(--success) !important; }
+        .wrong { background-color: #f8d7da !important; border-color: var(--error) !important; color: var(--error) !important; text-decoration: line-through; }
+        .correct-select { border: 2px solid var(--success) !important; background-color: #d4edda; }
+        .wrong-select { border: 2px solid var(--error) !important; background-color: #f8d7da; }
+
+        /* BOTONES */
+        .btn-group { margin-top: 20px; margin-bottom: 10px; }
+        button {
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+            margin-right: 5px;
+        }
+        .btn-finish { background-color: var(--bc-blue); color: white; }
+        .btn-reset { background-color: white; color: var(--bc-blue); border: 2px solid var(--bc-blue); }
+        .btn-show-ans { background-color: var(--answer-blue); color: white; display: none; }
+        
+        .score-msg { margin-left: 15px; font-weight: bold; font-size: 1.1rem; }
+        .ans-panel { 
+            margin-top: 15px; 
+            padding: 15px; 
+            background-color: #eef7ff; 
+            border: 1px dashed var(--answer-blue); 
+            border-radius: 8px; 
+            color: var(--answer-blue);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="hero-container">
+        <img src="https://www.shutterstock.com/shutterstock/photos/2616510275/display_1500/stock-photo-truck-driver-speaking-with-police-officer-2616510275.jpg" alt="Police stop interaction" class="hero-img">
+    </div>
+
+    <header>
+        <h1>English for Truckers: Road Inspection 2</h1>
+        <p>Interactive Lesson: Vocabulary and Reading Comprehension.</p>
+    </header>
+
+    <div class="content">
+        
+        <div class="section-title">Preparation: Key Vocabulary</div>
+        <p>1. Select a word from the pool. <br> 2. Click on the <strong>grey box</strong> to place it.</p>
+        
+<div class="word-pool" id="pool1">
+            <div class="word-card" onclick="selectWord(this)">CDL</div>
+            <div class="word-card" onclick="selectWord(this)">Load securement</div>
+            <div class="word-card" onclick="selectWord(this)">DOT Number</div>
+            <div class="word-card" onclick="selectWord(this)">DVIR</div>
+            <div class="word-card" onclick="selectWord(this)">Level 3 Inspection</div>
+            <div class="word-card" onclick="selectWord(this)">Weight limit</div>
+            <div class="word-card" onclick="selectWord(this)">Air hoses</div>
+            <div class="word-card" onclick="selectWord(this)">Hazmat permit</div>
+            <div class="word-card" onclick="selectWord(this)">Delivery manifest</div>
+            <div class="word-card" onclick="selectWord(this)">Medical Card</div>
+        </div>
+
+        <div class="gap-container" id="task1">
+            1. The officer will first ask to see your commercial license or <span class="gap-box" data-ans="CDL" onclick="placeWord(this)"></span>.<br>
+            2. If your straps are loose, you will get a ticket for improper <span class="gap-box" data-ans="Load securement" onclick="placeWord(this)"></span>.<br>
+            3. Make sure the <span class="gap-box" data-ans="DOT Number" onclick="placeWord(this)"></span> on your door is clean and easy to read.<br>
+            4. You must show your <span class="gap-box" data-ans="DVIR" onclick="placeWord(this)"></span> to prove you checked the truck today.<br>
+            5. In a <span class="gap-box" data-ans="Level 3 Inspection" onclick="placeWord(this)"></span>, the officer only checks your paperwork.<br>
+            6. Local streets often have a strict <span class="gap-box" data-ans="Weight limit" onclick="placeWord(this)"></span> for heavy trucks.<br>
+            7. Check your <span class="gap-box" data-ans="Air hoses" onclick="placeWord(this)"></span> for leaks; the police listen for them.<br>
+            8. If you are delivering fuel or chemicals, you must carry your <span class="gap-box" data-ans="Hazmat permit" onclick="placeWord(this)"></span>.<br>
+            9. The officer may cross-check your stops using your <span class="gap-box" data-ans="Delivery manifest" onclick="placeWord(this)"></span>.<br>
+            10. Even for short trips, you must carry your <span class="gap-box" data-ans="Medical Card" onclick="placeWord(this)"></span> at all times.
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-finish" onclick="checkGaps('task1')">Check Answers</button>
+            <button class="btn-reset" onclick="resetGaps('task1', 'pool1')">Try again</button>
+            <button id="btn-show-task1" class="btn-show-ans" onclick="toggleAnswers('ans-task1')">Show Answers</button>
+            <span id="score-task1" class="score-msg"></span>
+        </div>
+        <div id="ans-task1" class="ans-panel">
+            <strong>Correct Answers:</strong> 1. CDL | 2. Load securement | 3. DOT Number | 4. DVIR | 5. Level 3 Inspection | 6. Weight limit | 7. Air hoses | 8. Hazmat permit | 9. Delivery manifest | 10. Medical Card
+        </div>
+
+        <div class="section-title" style="margin-top: 40px;">Reading Scenario</div>
+<div class="reading-box">
+            <p><strong>Officer Sanchez:</strong> Good afternoon. I am conducting a random <strong>Level 3 Inspection</strong> today. Please keep your hands visible. First, I need to see your <strong>CDL</strong> and your current <strong>Medical Card</strong> to ensure you are fit to operate this commercial vehicle.</p>
+
+            <p><strong>Luis:</strong> Good afternoon, Officer. Not a problem. Here is my Class A <strong>CDL</strong> and my medical certificate. I keep my <strong>Medical Card</strong> in this folder along with all my local trip authorization documents.</p>
+
+            <p><strong>Officer Sanchez:</strong> Thank you. I noticed your <strong>DOT Number</strong> on the driver-side door is a bit faded and hard to read; you should fix that. Also, please provide your <strong>DVIR</strong> to confirm that you performed your safety check before leaving the yard this morning.</p>
+
+            <p><strong>Luis:</strong> Here is the <strong>DVIR</strong>, Officer. I checked the truck at 6:00 AM. I’ll make sure to repaint the <strong>DOT Number</strong> as soon as I get back to the terminal. I want to make sure my company stays compliant.</p>
+
+            <p><strong>Officer Sanchez:</strong> I see you are heading toward the downtown district. Are you aware of the <strong>Weight limit</strong> on the bypass bridge? Also, let me see your <strong>Delivery manifest</strong> to check how many stops you have left and what you are carrying.</p>
+
+            <p><strong>Luis:</strong> Yes, I checked the <strong>Weight limit</strong>, and I am well under it. Here is my <strong>Delivery manifest</strong>. Since I am carrying industrial cleaners, I also have my <strong>Hazmat permit</strong> attached to the paperwork right here.</p>
+
+            <p><strong>Officer Sanchez:</strong> Everything seems to be in order with the paperwork. However, I need you to step out and check your <strong>Air hoses</strong>. I can hear a slight "hissing" sound, and an audible air leak is a safety violation. We also need to double-check your <strong>Load securement</strong>.</p>
+
+            <p><strong>Luis:</strong> I’ll check the <strong>Air hoses</strong> immediately, Officer. Regarding the <strong>Load securement</strong>, I used extra straps this morning to make sure nothing moves during my local deliveries. I take safety very seriously.</p>
+
+            <p><strong>Officer Sanchez:</strong> Good. If the air leak is minor and you can fix it now, I will let you go. If your <strong>Load securement</strong> is tight and your documents match, you’ll be on your way. Drive safely.</p>
+        </div>
+
+<div class="section-title">Comprehension Check</div>
+<div id="task2">
+    <div class="tf-row">
+        <span>1. Officer Sanchez is conducting a Level 3 Inspection.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>2. Luis forgot to bring his Medical Card today.</span>
+        <select class="q-tf" data-ans="F">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>3. The DOT Number on the truck door is faded and hard to read.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>4. Luis performed his DVIR at 6:00 AM this morning.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>5. The bypass bridge on the route has no weight limit.</span>
+        <select class="q-tf" data-ans="F">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>6. Luis is carrying industrial cleaners for his local deliveries.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>7. Luis does not need a Hazmat permit for this specific cargo.</span>
+        <select class="q-tf" data-ans="F">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>8. The officer heard a "hissing" sound coming from the air hoses.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>9. Luis used extra straps to ensure proper load securement.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+    <div class="tf-row">
+        <span>10. Luis will be allowed to leave if he fixes the air leak immediately.</span>
+        <select class="q-tf" data-ans="T">
+            <option value="">Choose...</option>
+            <option value="T">True</option>
+            <option value="F">False</option>
+        </select>
+    </div>
+</div>
+
+<div class="btn-group">
+    <button class="btn-finish" onclick="checkTF('task2')">Check Answers</button>
+    <button class="btn-reset" onclick="resetTF('task2')">Try again</button>
+    <button id="btn-show-task2" class="btn-show-ans" onclick="toggleAnswers('ans-task2')">Show Answers</button>
+    <span id="score-task2" class="score-msg"></span>
+</div>
+
+<div id="ans-task2" class="ans-panel">
+    <strong>Correct Answers:</strong> 1. T | 2. F | 3. T | 4. T | 5. F | 6. T | 7. F | 8. T | 9. T | 10. T
+</div>
+
+<script>
+    let selectedEl = null;
+
+    function selectWord(el) {
+        if (el.classList.contains('used')) return;
+        if (selectedEl) selectedEl.classList.remove('selected');
+        selectedEl = el;
+        el.classList.add('selected');
+    }
+
+    function placeWord(gap) {
+        if (!selectedEl) return;
+        const oldWord = gap.innerText;
+        if (oldWord) {
+            document.querySelectorAll('.word-card').forEach(c => {
+                if(c.innerText === oldWord) c.classList.remove('used');
+            });
+        }
+        gap.innerText = selectedEl.innerText;
+        gap.style.backgroundColor = "white";
+        selectedEl.classList.add('used');
+        selectedEl.classList.remove('selected');
+        selectedEl = null;
+    }
+
+    function checkGaps(taskId) {
+        let score = 0;
+        const gaps = document.querySelectorAll(`#${taskId} .gap-box`);
+        gaps.forEach(g => {
+            if (g.innerText.trim() === g.getAttribute('data-ans')) {
+                g.className = "gap-box correct";
+                score++;
+            } else {
+                g.className = "gap-box wrong";
+            }
+        });
+        document.getElementById(`score-${taskId}`).innerText = `Score: ${score}/${gaps.length}`;
+        document.getElementById(`btn-show-${taskId}`).style.display = "inline-block";
+    }
+
+    function resetGaps(taskId, poolId) {
+        document.querySelectorAll(`#${taskId} .gap-box`).forEach(g => { 
+            g.innerText = ""; g.className = "gap-box"; g.style.backgroundColor = "var(--bc-grey-bg)";
+        });
+        document.querySelectorAll(`#${poolId} .word-card`).forEach(c => c.className = "word-card");
+        document.getElementById(`score-${taskId}`).innerText = "";
+        document.getElementById(`btn-show-${taskId}`).style.display = "none";
+        document.getElementById(`ans-${taskId}`).style.display = "none";
+        selectedEl = null;
+    }
+
+    function checkTF(taskId) {
+        let score = 0;
+        const selects = document.querySelectorAll(`#${taskId} .q-tf`);
+        selects.forEach(s => {
+            if (s.value === s.getAttribute('data-ans')) {
+                s.className = "q-tf correct-select";
+                score++;
+            } else {
+                s.className = "q-tf wrong-select";
+            }
+        });
+        document.getElementById(`score-${taskId}`).innerText = `Score: ${score}/${selects.length}`;
+        document.getElementById(`btn-show-${taskId}`).style.display = "inline-block";
+    }
+
+    function resetTF(taskId) {
+        document.querySelectorAll(`#${taskId} .q-tf`).forEach(s => { s.value = ""; s.className = "q-tf"; });
+        document.getElementById(`score-${taskId}`).innerText = "";
+        document.getElementById(`btn-show-${taskId}`).style.display = "none";
+        document.getElementById(`ans-${taskId}`).style.display = "none";
+    }
+
+    function toggleAnswers(id) {
+        const panel = document.getElementById(id);
+        panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
