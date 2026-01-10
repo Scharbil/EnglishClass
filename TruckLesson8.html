@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lección Completa Integradora</title>
+    <style>
+
+        /* Texto a voz css*/
+.audio-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.btn-audio {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+/* Fin texto a voz css*/
+
+/* --- ESTILO PARA EL CROP SUPERIOR --- */
+.lesson-banner {
+    width: 100%;
+    height: 460px;        /* Ajusta esta altura a tu gusto (antes era 500px) */
+    object-fit: cover;    /* Hace que la imagen llene el espacio sin deformarse */
+    object-position: top; /* Mantiene visible la parte superior de la foto */
+    display: block;
+    margin-bottom: 20px;  /* Espacio con el texto de abajo */
+}
+
+header {
+    padding: 25px 40px;
+    border-bottom: 4px solid var(--bc-blue);
+}
+
+.content { 
+    padding: 30px 40px; 
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: var(--bc-blue);
+    margin-bottom: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Fin del crop superior */
+
+        :root {
+            --vite-green: #42b883; --error-red: #ff4d4d; --primary-blue: #646cff;
+            --bg-color: #f4f7f6; --dark-grey: #374151; --accent-purple: #8b5cf6;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-color); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-wrapper { max-width: 850px; width: 100%; }
+        section { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        
+        /* Intro & Media */
+        .intro-comment { font-style: italic; border-left: 4px solid var(--accent-purple); padding-left: 15px; margin: 15px 0; color: #555; }
+        .reading-box { background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; line-height: 1.6; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-top: 15px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* Actividades & Tabs */
+        .tabs-nav { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; }
+        .tab-button { padding: 8px 15px; border: none; background: #eee; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .tab-button.active { background: var(--primary-blue); color: white; }
+        .activity-container { display: none; }
+        .activity-container.active { display: block; }
+
+        /* Elementos de Juego */
+        .pool-area { background: #f8f9fa; border: 2px dashed #d1d5db; padding: 15px; border-radius: 12px; display: flex; flex-wrap: wrap; gap: 10px; min-height: 50px; margin: 10px 0; justify-content: center; }
+        .tag, .segment { padding: 8px 12px; background: var(--primary-blue); color: white; border-radius: 6px; cursor: pointer; font-weight: 500; user-select: none; }
+        .correct { background-color: var(--vite-green) !important; }
+        .incorrect { background-color: var(--error-red) !important; }
+
+        /* Categorización */
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .category-box { border: 2px solid #e5e7eb; border-radius: 12px; padding: 15px; background: #fff; cursor: pointer; height: auto; min-height: 100px; display: flex; flex-direction: column; gap: 8px; }
+        .category-box.active { border-color: var(--primary-blue); background: #f0f1ff; }
+        .category-items { display: flex; flex-wrap: wrap; gap: 5px; }
+
+        /* Verdadero Falso */
+        .tf-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .tf-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: white; font-weight: bold; }
+        .tf-btn.selected { background: var(--primary-blue); color: white; }
+
+        /* Botones Acción */
+        .actions { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; justify-content: center; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; color: white; }
+        .btn-finish { background: var(--vite-green); }
+        .btn-toggle { background: var(--accent-purple); }
+        .btn-reset { background: var(--dark-grey); }
+        .nav-btn { background: #ddd; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <section>
+        <h1>English for Truckers: Road Inspection 8 - The Water Tanker</h1>
+        <img src="https://www.shutterstock.com/shutterstock/photos/2616510275/display_1500/stock-photo-truck-driver-speaking-with-police-officer-2616510275.jpg" alt="Banner de la lección" class="lesson-banner">
+        <div class="intro-comment">Interactive Lesson: Vocabulary and Reading Comprehension.</div>
+    </section>
+
+    <section>
+        <h2>1. Vocabulario</h2>
+        <div id="wm-pool" class="pool-area"></div>
+        <div id="wm-sentences"></div>
+        <div class="actions">
+            <button id="wm-btn-finish" class="btn btn-finish" onclick="wm_handleFinish()">Validar</button>
+            <button id="wm-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="wm_toggleAnswers()">Ver Solución</button>
+            <button class="btn btn-reset" onclick="wm_init()">Reiniciar</button>
+        </div>
+    </section>
+
+    <section>
+<h2>2. Contenido Multimedia</h2>
+<div class="video-container" style="display: none; text-align: center; margin: 20px 0;">
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/yN6ADNcTM8Y" 
+        title="Partes y seguridad del camión" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        referrerpolicy="strict-origin-when-cross-origin" 
+        allowfullscreen>
+    </iframe>
+</div>
+
+ 
+
+<div class="reading-box">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="margin:0;">Reading Section</h3>
+        <div class="audio-controls">
+            <select id="audio-speed" class="nav-btn" style="padding: 4px;">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+            </select>
+            <button onclick="leerTexto()" class="btn-audio">▶</button>
+            <button onclick="leerSeleccion()" class="btn-audio" style="background:var(--accent-purple)">✐</button>
+            <button onclick="pausarAudio()" class="nav-btn">⏸</button>
+            <button onclick="detenerAudio()" class="nav-btn" style="color:var(--error-red)">⏹</button>
+        </div>
+    </div>
+    
+<div id="text-to-read" style="border-top: 1px solid #eee; padding-top: 10px;">
+    <p>The transport officer signaled the tanker to pull into the weigh station. "Good afternoon," the inspector said, checking his clipboard. "Your truck looks heavy. Before we weigh you, I need to see your documents to check your <b>Tare Weight</b> and ensure your total load is within legal limits."</p>
+
+    <p>The driver stepped down, pointing to the top of the tank. "I just finished a delivery, Officer. If you check the <b>Manway</b> seals, you'll see they are locked and airtight. I’ve also been careful about the water quality; we’ve been monitoring the tank for any <b>Sediment</b> buildup to ensure the water remains strictly <b>Potable</b>."</p>
+
+    <p>The inspector walked to the rear of the vehicle. "I see you have a specialized <b>Spray Head</b> installed for dust suppression. Is the <b>Fitting</b> secure? I also noticed your <b>Suction Hose</b> is looking a bit worn near the connectors. A crack there would make <b>Priming</b> the pump nearly impossible during your next pickup."</p>
+
+    <p>"I have a spare gasket for that <b>Fitting</b> in the cab, sir," the driver replied. "And don't worry about the pump; the <b>Float Valve</b> is working perfectly to prevent any overfilling or pressure issues. I personally inspected the internal <b>Baffles</b> last week to make sure they are still effectively reducing the liquid movement."</p>
+
+    <p>The officer nodded, satisfied with the technical explanation. "Good. If those <b>Baffles</b> fail, the weight shift will make this truck a danger on the road. Everything seems to be in order. Your equipment is clean and your maintenance logs are up to date. You’re good to go. Drive safely!"</p>
+</div>
+</div>
+
+    </section>
+
+    <section>
+        <h2>3. Práctica Interactiva</h2>
+        <div class="tabs-nav">
+            <button class="tab-button active" onclick="switchTab('sentence-order')">Orden</button>
+            <button class="tab-button" onclick="switchTab('categorization')">Categorías</button>
+            <button class="tab-button" onclick="switchTab('true-false')">V/F</button>
+        </div>
+
+        <div id="sentence-order" class="activity-container active">
+            <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:10px;">
+                <button id="so-prev" class="nav-btn" onclick="so_changeSentence(-1)">←</button>
+                <span id="so-counter">1 / 1</span>
+                <button id="so-next" class="nav-btn" onclick="so_changeSentence(1)">→</button>
+            </div>
+            <div id="so-pool" class="pool-area"></div>
+            <div id="so-workspace" class="pool-area" style="background:white; border-style:solid"></div>
+            <div class="actions">
+                <button id="so-btn-finish" class="btn btn-finish" onclick="so_handleFinish()">Finalizar</button>
+                <button id="so-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="so_toggleAnswers()">Ver Respuestas</button>
+                <button class="btn btn-reset" onclick="so_init()">Reiniciar</button>
+            </div>
+        </div>
+
+        <div id="categorization" class="activity-container">
+            <div id="cat-pool" class="pool-area"></div>
+            <div id="cat-grid" class="categories-grid"></div>
+            <div class="actions">
+                <button id="cat-btn-finish" class="btn btn-finish" onclick="cat_handleFinish()">Finalizar</button>
+                <button id="cat-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="cat_toggleAnswers()">Ver Respuestas</button>
+                <button class="btn btn-reset" onclick="cat_init()">Reiniciar</button>
+            </div>
+        </div>
+
+        <div id="true-false" class="activity-container">
+            <div id="tf-container"></div>
+            <div class="actions">
+                <button id="tf-btn-finish" class="btn btn-finish" onclick="tf_handleFinish()">Finalizar</button>
+                <button id="tf-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="tf_toggleAnswers()">Ver Respuestas</button>
+                <button class="btn btn-reset" onclick="tf_init()">Reiniciar</button>
+            </div>
+        </div>
+    </section>
+
+<section>
+    <h2>4. Final Discussion</h2>
+    <div style="background: #eff6ff; padding: 15px; border-radius: 12px; border: 1px solid #dbeafe;">
+<ul>
+    <li>How do internal <b>Baffles</b> help the driver maintain control of the vehicle compared to an empty tank?</li>
+    <li>Why is the <b>Manway</b> considered a critical inspection point for both safety and <b>Potable</b> water quality?</li>
+    <li>What are the operational consequences if a driver cannot achieve proper <b>Priming</b> due to a damaged <b>Suction Hose</b>?</li>
+    <li>How does a functioning <b>Float Valve</b> protect the tank's integrity during the filling process?</li>
+    <li>Why is it important to distinguish between the <b>Tare Weight</b> and the total loaded weight during a transport inspection?</li>
+</ul>
+    </div>
+</section>
+
+<script>
+
+/* texto a voz corregido para móviles */
+let currentUtterance = null;
+
+// Función para obtener la voz adecuada (los móviles a veces necesitan esto)
+function configurarVoz(texto) {
+    window.speechSynthesis.cancel(); 
+    const mensaje = new SpeechSynthesisUtterance(texto);
+    
+    const speed = document.getElementById('audio-speed').value;
+    
+    // CAMBIO IMPORTANTE: El código correcto es 'en-US' o 'en-GB'. 
+    // 'en-EU' no es un estándar y puede hacer que el móvil no lea nada.
+    mensaje.lang = 'en-US'; 
+    mensaje.rate = parseFloat(speed);
+    
+    // Opcional: Forzar una voz si el sistema tarda en cargar
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        // Intentamos buscar una voz en inglés, si no, usamos la primera disponible
+        const englishVoice = voices.find(v => v.lang.startsWith('en'));
+        if (englishVoice) mensaje.voice = englishVoice;
+    }
+
+    return mensaje;
+}
+
+function leerTexto() {
+    const elemento = document.getElementById('text-to-read');
+    if (!elemento) return;
+    
+    const texto = elemento.innerText;
+    currentUtterance = configurarVoz(texto);
+    
+    // Tip para móviles: Algunos requieren que el volumen se defina explícitamente
+    currentUtterance.volume = 1; 
+    
+    window.speechSynthesis.speak(currentUtterance);
+}
+
+function leerSeleccion() {
+    const textoSeleccionado = window.getSelection().toString();
+    
+    if (textoSeleccionado.trim() === "") {
+        alert("Please, highlight the text you want to hear first.");
+        return;
+    }
+    
+    currentUtterance = configurarVoz(textoSeleccionado);
+    window.speechSynthesis.speak(currentUtterance);
+}
+
+// Las funciones de pausar y detener suelen funcionar bien si la inicialización fue correcta
+function pausarAudio() {
+    if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+        } else {
+            window.speechSynthesis.pause();
+        }
+    }
+}
+
+function detenerAudio() {
+    window.speechSynthesis.cancel();
+}
+
+
+    /* DATOS MINIMOS */
+const WM_DATA = [
+    { sentence: "The internal plates used to reduce water movement and improve vehicle stability are called ______", answer: "Baffles" },
+    { sentence: "The process of removing air from a pump to allow it to begin pulling water is known as ______", answer: "Priming" },
+    { sentence: "A flexible, heavy-duty pipe used for drawing water from a static source into the tank is a ______", answer: "Suction Hose" },
+    { sentence: "The pressure-sensitive device that automatically shuts off water flow to prevent overfilling is the ______", answer: "Float Valve" },
+    { sentence: "The opening at the top of the tank used for inspection and maintenance access is the ______", answer: "Manway" },
+    { sentence: "The residue or mineral buildup that can accumulate inside the tank over time is called ______", answer: "Sediment" },
+    { sentence: "The external connection point used to link several hoses together for longer reach is a ______", answer: "Fitting" },
+    { sentence: "A specialized nozzle used for high-pressure water distribution or dust suppression is a ______", answer: "Spray Head" },
+    { sentence: "The practice of ensuring the water is safe for human consumption is called maintaining ______ quality.", answer: "Potable" },
+    { sentence: "The weight of the empty truck without any water or cargo is known as the ______", answer: "Tare Weight" }
+];
+const SO_DATA = [
+    { segments: ["The", "inspector", "needs", "to", "check", "your", "Tare", "Weight", "and", "legal", "limits"] },
+    { segments: ["The", "Manway", "seals", "are", "locked", "and", "completely", "airtight"] },
+    { segments: ["We", "monitor", "the", "tank", "for", "any", "Sediment", "buildup", "to", "keep", "water", "Potable"] },
+    { segments: ["I", "see", "you", "have", "a", "specialized", "Spray", "Head", "installed", "for", "dust", "suppression"] },
+    { segments: ["The", "Suction", "Hose", "is", "looking", "a", "bit", "worn", "near", "the", "connectors"] },
+    { segments: ["A", "crack", "would", "make", "Priming", "the", "pump", "nearly", "impossible"] },
+    { segments: ["I", "have", "a", "spare", "gasket", "for", "that", "Fitting", "in", "the", "cab"] },
+    { segments: ["The", "Float", "Valve", "is", "working", "perfectly", "to", "prevent", "overfilling"] },
+    { segments: ["I", "personally", "inspected", "the", "internal", "Baffles", "last", "week"] },
+    { segments: ["Baffles", "are", "still", "effectively", "reducing", "the", "liquid", "movement"] }
+];
+const CAT_DATA = [
+    { 
+        category: "Safety & Liquid Dynamics", 
+        items: [
+            "Internal Baffles integrity", 
+            "Tare Weight verification", 
+            "Liquid movement reduction", 
+            "Manway airtight seal", 
+            "Safe center of gravity",
+            "Braking stability"
+        ] 
+    }, 
+    { 
+        category: "Operational Components", 
+        items: [
+            "Pump Priming process", 
+            "Heavy-duty Suction Hose", 
+            "Potable water quality", 
+            "Sediment buildup prevention", 
+            "Spray Head distribution",
+            "Automatic Float Valve"
+        ] 
+    }
+];
+const TF_DATA = [
+    { text: "The inspector needs to check the Tare Weight to ensure the total load is legal.", answer: true }, 
+    { text: "A cracked Suction Hose makes it easier to achieve pump Priming.", answer: false },
+    { text: "The Manway must be locked and airtight to protect the Potable water quality.", answer: true },
+    { text: "The Spray Head is a specialized component used for dust suppression.", answer: true },
+    { text: "Sediment buildup is encouraged to improve the mineral content of the water.", answer: false },
+    { text: "The driver keeps a spare gasket for the Fitting in the cab of the truck.", answer: true },
+    { text: "A functioning Float Valve is used to prevent overfilling during the loading process.", answer: true },
+    { text: "Internal Baffles are designed to increase liquid movement during transport.", answer: false },
+    { text: "If Baffles fail, the weight shift can make the vehicle dangerous on the road.", answer: true },
+    { text: "The inspector was satisfied because the maintenance logs were up to date.", answer: true }
+];
+
+    function switchTab(id) {
+        document.querySelectorAll('.activity-container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    /* 1. VOCABULARIO */
+    let wm_pool=[], wm_user=[], wm_sel=null, wm_fin=false, wm_view=false;
+    function wm_init() {
+        wm_fin=false; wm_view=false; wm_sel=null;
+        wm_pool=WM_DATA.map(d=>d.answer).sort(()=>Math.random()-0.5);
+        wm_user=WM_DATA.map(()=>null);
+        document.getElementById('wm-btn-finish').style.display='block';
+        document.getElementById('wm-btn-toggle').style.display='none';
+        wm_render();
+    }
+    function wm_render() {
+        const p=document.getElementById('wm-pool'), sCont=document.getElementById('wm-sentences');
+        p.innerHTML=''; sCont.innerHTML='';
+        if(!wm_fin) wm_pool.forEach(w=>{
+            let s=document.createElement('span'); s.className='tag'; s.innerText=w;
+            if(wm_sel===w) s.style.boxShadow="0 0 0 3px black";
+            s.onclick=()=>{ wm_sel=(wm_sel===w)?null:w; wm_render(); };
+            p.appendChild(s);
+        });
+        WM_DATA.forEach((d,i)=>{
+            let parts=d.sentence.split('______'), display=wm_view?d.answer:(wm_user[i]||'...');
+            let color=wm_fin?(wm_view||wm_user[i]===d.answer?'var(--vite-green)':'var(--error-red)'):'var(--primary-blue)';
+            let div=document.createElement('div'); div.style.margin="10px 0";
+            div.innerHTML=`${parts[0]} <span style="cursor:pointer; font-weight:bold; color:${color}; border-bottom:2px solid">${display}</span>`;
+            div.querySelector('span').onclick=()=>{
+                if(wm_fin) return;
+                if(wm_sel){ if(wm_user[i]) wm_pool.push(wm_user[i]); wm_user[i]=wm_sel; wm_pool=wm_pool.filter(x=>x!==wm_sel); wm_sel=null; }
+                else if(wm_user[i]){ wm_pool.push(wm_user[i]); wm_user[i]=null; }
+                wm_render();
+            };
+            sCont.appendChild(div);
+        });
+    }
+    function wm_handleFinish(){ wm_fin=true; document.getElementById('wm-btn-finish').style.display='none'; document.getElementById('wm-btn-toggle').style.display='block'; wm_render(); }
+    function wm_toggleAnswers(){ wm_view=!wm_view; wm_render(); }
+
+    /* 2. ORDEN */
+    let so_curr=0, so_data_u=[], so_fin=false, so_view=false;
+    function so_init(){
+        so_fin=false; so_view=false; so_curr=0;
+        so_data_u=SO_DATA.map(d=>({pool:[...d.segments].sort(()=>Math.random()-0.5), work:[]}));
+        document.getElementById('so-btn-finish').style.display='block';
+        document.getElementById('so-btn-toggle').style.display='none';
+        so_render();
+    }
+    function so_changeSentence(dir){ so_curr+=dir; so_render(); }
+    function so_render(){
+        document.getElementById('so-prev').disabled=(so_curr===0);
+        document.getElementById('so-next').disabled=(so_curr===SO_DATA.length-1);
+        document.getElementById('so-counter').innerText=`${so_curr+1} / ${SO_DATA.length}`;
+        const p=document.getElementById('so-pool'), w=document.getElementById('so-workspace');
+        p.innerHTML=''; w.innerHTML='';
+        const cur=so_data_u[so_curr];
+        if(!so_fin) cur.pool.forEach((s,i)=>{
+            let d=document.createElement('div'); d.className='segment'; d.innerText=s;
+            d.onclick=()=>{ cur.work.push(cur.pool.splice(i,1)[0]); so_render(); };
+            p.appendChild(d);
+        });
+        const list=so_view?SO_DATA[so_curr].segments:cur.work;
+        list.forEach((s,i)=>{
+            let d=document.createElement('div'); d.className='segment'; d.innerText=s;
+            if(so_fin) d.classList.add(so_view||s===SO_DATA[so_curr].segments[i]?'correct':'incorrect');
+            else d.onclick=()=>{ cur.pool.push(cur.work.splice(i,1)[0]); so_render(); };
+            w.appendChild(d);
+        });
+    }
+    function so_handleFinish(){ so_fin=true; document.getElementById('so-btn-finish').style.display='none'; document.getElementById('so-btn-toggle').style.display='block'; so_render(); }
+    function so_toggleAnswers(){ so_view=!so_view; so_render(); }
+
+    /* 3. CATEGORIZACION */
+    let cat_p=[], cat_u={}, cat_act="", cat_fin=false, cat_view=false;
+    function cat_init(){
+        cat_fin=false; cat_view=false; cat_p=[]; cat_act=CAT_DATA[0].category;
+        CAT_DATA.forEach(c=>{ cat_p.push(...c.items); cat_u[c.category]=[]; });
+        cat_p.sort(()=>Math.random()-0.5);
+        document.getElementById('cat-btn-finish').style.display='block';
+        document.getElementById('cat-btn-toggle').style.display='none';
+        cat_render();
+    }
+    function cat_render(){
+        const p=document.getElementById('cat-pool'), g=document.getElementById('cat-grid');
+        p.innerHTML=''; g.innerHTML='';
+        if(!cat_fin) cat_p.forEach((it,i)=>{
+            let s=document.createElement('span'); s.className='tag'; s.innerText=it;
+            s.onclick=()=>{ cat_u[cat_act].push(cat_p.splice(i,1)[0]); cat_render(); };
+            p.appendChild(s);
+        });
+        CAT_DATA.forEach(c=>{
+            let b=document.createElement('div'); b.className=`category-box ${cat_act===c.category?'active':''}`;
+            b.innerHTML=`<b>${c.category}</b><div class="category-items"></div>`;
+            b.onclick=()=>{ if(!cat_fin){cat_act=c.category; cat_render();} };
+            const itemCont=b.querySelector('.category-items');
+            const list=cat_view?c.items:cat_u[c.category];
+            list.forEach((it,i)=>{
+                let s=document.createElement('span'); s.className='tag'; s.innerText=it;
+                if(cat_fin) s.classList.add(cat_view||c.items.includes(it)?'correct':'incorrect');
+                else s.onclick=(e)=>{ e.stopPropagation(); cat_p.push(cat_u[c.category].splice(i,1)[0]); cat_render(); };
+                itemCont.appendChild(s);
+            });
+            g.appendChild(b);
+        });
+    }
+    function cat_handleFinish(){ cat_fin=true; document.getElementById('cat-btn-finish').style.display='none'; document.getElementById('cat-btn-toggle').style.display='block'; cat_render(); }
+    function cat_toggleAnswers(){ cat_view=!cat_view; cat_render(); }
+
+    /* 4. VERDADERO FALSO */
+    let tf_u=[], tf_fin=false, tf_view=false;
+    function tf_init(){
+        tf_fin=false; tf_view=false; tf_u=TF_DATA.map(()=>null);
+        document.getElementById('tf-btn-finish').style.display='block';
+        document.getElementById('tf-btn-toggle').style.display='none';
+        tf_render();
+    }
+    function tf_render(){
+        const c=document.getElementById('tf-container'); c.innerHTML='';
+        TF_DATA.forEach((d,i)=>{
+            let r=document.createElement('div'); r.className='tf-row';
+            r.innerHTML=`<span>${d.text}</span><div></div>`;
+            [true, false].forEach(v=>{
+                let btn=document.createElement('button'); btn.className='tf-btn'; btn.innerText=v?'V':'F';
+                if(tf_fin){
+                    if(tf_view && v===d.answer) btn.classList.add('correct');
+                    else if(!tf_view && tf_u[i]===v) btn.classList.add(v===d.answer?'correct':'incorrect');
+                } else {
+                    if(tf_u[i]===v) btn.classList.add('selected');
+                    btn.onclick=()=>{ tf_u[i]=v; tf_render(); };
+                }
+                r.querySelector('div').appendChild(btn);
+            });
+            c.appendChild(r);
+        });
+    }
+    function tf_handleFinish(){ tf_fin=true; document.getElementById('tf-btn-finish').style.display='none'; document.getElementById('tf-btn-toggle').style.display='block'; tf_render(); }
+    function tf_toggleAnswers(){ tf_view=!tf_view; tf_render(); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    wm_init(); 
+    so_init(); 
+    cat_init(); 
+    tf_init();
+});
+</script>
+</body>
+</html>
