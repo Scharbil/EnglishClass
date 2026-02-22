@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lección Completa Integradora</title>
+    <style>
+
+        /* Texto a voz css*/
+.audio-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.btn-audio {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+/* Fin texto a voz css*/
+
+/* --- ESTILO PARA EL CROP SUPERIOR --- */
+.lesson-banner {
+    width: 100%;
+    height: 460px;        /* Ajusta esta altura a tu gusto (antes era 500px) */
+    object-fit: cover;    /* Hace que la imagen llene el espacio sin deformarse */
+    object-position: top; /* Mantiene visible la parte superior de la foto */
+    display: block;
+    margin-bottom: 20px;  /* Espacio con el texto de abajo */
+}
+
+header {
+    padding: 25px 40px;
+    border-bottom: 4px solid var(--bc-blue);
+}
+
+.content { 
+    padding: 30px 40px; 
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: var(--bc-blue);
+    margin-bottom: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Fin del crop superior */
+
+        :root {
+            --vite-green: #42b883; --error-red: #ff4d4d; --primary-blue: #646cff;
+            --bg-color: #f4f7f6; --dark-grey: #374151; --accent-purple: #8b5cf6;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-color); padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .main-wrapper { max-width: 850px; width: 100%; }
+        section { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        
+        /* Intro & Media */
+        .intro-comment { font-style: italic; border-left: 4px solid var(--accent-purple); padding-left: 15px; margin: 15px 0; color: #555; }
+        .reading-box { background: #fafafa; padding: 15px; border-radius: 10px; border: 1px solid #eee; line-height: 1.6; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-top: 15px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        /* Actividades & Tabs */
+        .tabs-nav { display: flex; gap: 8px; margin-bottom: 20px; justify-content: center; }
+        .tab-button { padding: 8px 15px; border: none; background: #eee; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .tab-button.active { background: var(--primary-blue); color: white; }
+        .activity-container { display: none; }
+        .activity-container.active { display: block; }
+
+        /* Elementos de Juego */
+        .pool-area { background: #f8f9fa; border: 2px dashed #d1d5db; padding: 15px; border-radius: 12px; display: flex; flex-wrap: wrap; gap: 10px; min-height: 50px; margin: 10px 0; justify-content: center; }
+        .tag, .segment { padding: 8px 12px; background: var(--primary-blue); color: white; border-radius: 6px; cursor: pointer; font-weight: 500; user-select: none; }
+        .correct { background-color: var(--vite-green) !important; }
+        .incorrect { background-color: var(--error-red) !important; }
+
+        /* Categorización */
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .category-box { border: 2px solid #e5e7eb; border-radius: 12px; padding: 15px; background: #fff; cursor: pointer; height: auto; min-height: 100px; display: flex; flex-direction: column; gap: 8px; }
+        .category-box.active { border-color: var(--primary-blue); background: #f0f1ff; }
+        .category-items { display: flex; flex-wrap: wrap; gap: 5px; }
+
+        /* Verdadero Falso */
+        .tf-row { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+        .tf-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer; background: white; font-weight: bold; }
+        .tf-btn.selected { background: var(--primary-blue); color: white; }
+
+        /* Botones Acción */
+        .actions { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; justify-content: center; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; color: white; }
+        .btn-finish { background: var(--vite-green); }
+        .btn-toggle { background: var(--accent-purple); }
+        .btn-reset { background: var(--dark-grey); }
+        .nav-btn { background: #ddd; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <section>
+        <h1>English for Truckers - Simple Test 1</h1>
+        <div class="intro-comment">Interactive Lesson: Vocabulary and Reading Comprehension.</div>
+    </section>
+
+    <section>
+        <h2>1. Vocabulario</h2>
+        <div id="wm-pool" class="pool-area"></div>
+        <div id="wm-sentences"></div>
+        <div class="actions">
+            <button id="wm-btn-finish" class="btn btn-finish" onclick="wm_handleFinish()">Validar</button>
+            <button id="wm-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="wm_toggleAnswers()">Ver Solución</button>
+            <button class="btn btn-reset" onclick="wm_init()">Reiniciar</button>
+        </div>
+    </section>
+
+    <section>
+<h2>2. Contenido Multimedia</h2>
+<div class="video-container" style="display: none; text-align: center; margin: 20px 0;">
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/yN6ADNcTM8Y" 
+        title="Partes y seguridad del camión" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        referrerpolicy="strict-origin-when-cross-origin" 
+        allowfullscreen>
+    </iframe>
+</div>
+
+ 
+
+<div class="reading-box">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="margin:0;">Reading Section</h3>
+        <div class="audio-controls">
+            <select id="audio-speed" class="nav-btn" style="padding: 4px;">
+                <option value="0.5">0.5x</option>
+                <option value="1" selected>1x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2">2x</option>
+            </select>
+            <button onclick="leerTexto()" class="btn-audio">▶</button>
+            <button onclick="leerSeleccion()" class="btn-audio" style="background:var(--accent-purple)">✐</button>
+            <button onclick="pausarAudio()" class="nav-btn">⏸</button>
+            <button onclick="detenerAudio()" class="nav-btn" style="color:var(--error-red)">⏹</button>
+        </div>
+    </div>
+    
+<div id="text-to-read" style="border-top: 1px solid #eee; padding-top: 10px;">
+    <p>— Good morning. Please pull over to the <b>Shoulder</b> for a <b>Level 3 inspection</b>.</p>
+    <p>— Good morning, Officer. Here is my <b>Driver's license</b> and <b>Registration</b>.</p>
+    <p>— Thank you. Show me your <b>ELD / Logbook</b> records for today.</p>
+    <p>— Yes. I am <b>On-duty</b>. I have four hours left in my <b>Driving limit</b>.</p>
+    <p>— Everything is correct. No <b>Violation</b> found. You can go.</p>
+
+    <p>---------</p>
+
+    <p>— Hello. Your <b>Gross weight</b> is too high. Please stop at the <b>Scale house</b>.</p>
+    <p>— Hello. Is my <b>Axle</b> okay? I checked the <b>Cargo</b> this morning.</p>
+    <p>— No, you are <b>Overweight</b> on the rear. You need to pay a <b>Fine</b>.</p>
+    <p>— I am sorry. Can I <b>Slide the tandems</b> to fix the weight?</p>
+    <p>— Yes, fix the weight now and show me your <b>Shipping papers</b>.</p>
+
+    <p>---------</p>
+
+    <p>— Good afternoon. I need to do a <b>Level 2 inspection</b> of your truck.</p>
+    <p>— Good afternoon. I will stay <b>Off-duty</b> while you check the vehicle.</p>
+    <p>— Your <b>Mirrors</b> are good, but your <b>Wipers</b> are very old. This is a <b>Violation</b>.</p>
+    <p>— I apologize. I have new <b>Wipers</b> in the <b>Sleeper berth</b>. I will change them.</p>
+    <p>— Good. Also, check your <b>Brake pads</b>. They look thin.</p>
+
+    <p>---------</p>
+
+    <p>— Stop! The road is dangerous. There is <b>Black ice</b> ahead.</p>
+    <p>— Thank you, Officer. I am looking for a <b>Shoulder</b> to park safely.</p>
+    <p>— Good idea. Do not use your <b>Jake brake</b> on this <b>Slippery surface</b>.</p>
+    <p>— I understand. I will go to my <b>Sleeper berth</b> and wait for the sun.</p>
+    <p>— Perfect. Stay safe and watch your <b>ELD / Logbook</b> hours.</p>
+</div>
+    <section>
+        <h2>3. Práctica Interactiva</h2>
+        <div class="tabs-nav">
+            <button class="tab-button active" onclick="switchTab('sentence-order')">Orden</button>
+            <button class="tab-button" onclick="switchTab('categorization')">Categorías</button>
+            <button class="tab-button" onclick="switchTab('true-false')">V/F</button>
+        </div>
+
+        <div id="sentence-order" class="activity-container active">
+            <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom:10px;">
+                <button id="so-prev" class="nav-btn" onclick="so_changeSentence(-1)">←</button>
+                <span id="so-counter">1 / 1</span>
+                <button id="so-next" class="nav-btn" onclick="so_changeSentence(1)">→</button>
+            </div>
+            <div id="so-pool" class="pool-area"></div>
+            <div id="so-workspace" class="pool-area" style="background:white; border-style:solid"></div>
+            <div class="actions">
+                <button id="so-btn-finish" class="btn btn-finish" onclick="so_handleFinish()">Finalizar</button>
+                <button id="so-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="so_toggleAnswers()">Ver Respuestas</button>
+                <button class="btn btn-reset" onclick="so_init()">Reiniciar</button>
+            </div>
+        </div>
+
+        <div id="categorization" class="activity-container">
+            <div id="cat-pool" class="pool-area"></div>
+            <div id="cat-grid" class="categories-grid"></div>
+            <div class="actions">
+                <button id="cat-btn-finish" class="btn btn-finish" onclick="cat_handleFinish()">Finalizar</button>
+                <button id="cat-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="cat_toggleAnswers()">Ver Respuestas</button>
+                <button class="btn btn-reset" onclick="cat_init()">Reiniciar</button>
+            </div>
+        </div>
+
+        <div id="true-false" class="activity-container">
+            <div id="tf-container"></div>
+            <div class="actions">
+                <button id="tf-btn-finish" class="btn btn-finish" onclick="tf_handleFinish()">Finalizar</button>
+                <button id="tf-btn-toggle" class="btn btn-toggle" style="display:none;" onclick="tf_toggleAnswers()">Ver Respuestas</button>
+                <button class="btn btn-reset" onclick="tf_init()">Reiniciar</button>
+            </div>
+        </div>
+    </section>
+
+<section>
+    <h2>4. Final Discussion</h2>
+    <div style="background: #eff6ff; padding: 15px; border-radius: 12px; border: 1px solid #dbeafe;">
+        <ul style="line-height: 1.8;">
+            <li>In the first scene, what documents does the <b>Officer</b> ask for?</li>
+            <li>In the second scene, is the truck <b>Overweight</b>? What does the driver need to pay?</li>
+            <li>In the third scene, what part of the truck is a <b>Violation</b>? (Mirrors or Wipers?)</li>
+            <li>In the fourth scene, why is the road dangerous and where does the driver park?</li>
+            <li>According to the text, is it a good idea to use the <b>Jake brake</b> on <b>Black ice</b>?</li>
+        </ul>
+    </div>
+</section>
+<script>
+
+/* texto a voz corregido para móviles */
+let currentUtterance = null;
+
+// Función para obtener la voz adecuada (los móviles a veces necesitan esto)
+function configurarVoz(texto) {
+    window.speechSynthesis.cancel(); 
+    const mensaje = new SpeechSynthesisUtterance(texto);
+    
+    const speed = document.getElementById('audio-speed').value;
+    
+    // CAMBIO IMPORTANTE: El código correcto es 'en-US' o 'en-GB'. 
+    // 'en-EU' no es un estándar y puede hacer que el móvil no lea nada.
+    mensaje.lang = 'en-US'; 
+    mensaje.rate = parseFloat(speed);
+    
+    // Opcional: Forzar una voz si el sistema tarda en cargar
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        // Intentamos buscar una voz en inglés, si no, usamos la primera disponible
+        const englishVoice = voices.find(v => v.lang.startsWith('en'));
+        if (englishVoice) mensaje.voice = englishVoice;
+    }
+
+    return mensaje;
+}
+
+function leerTexto() {
+    const elemento = document.getElementById('text-to-read');
+    if (!elemento) return;
+    
+    const texto = elemento.innerText;
+    currentUtterance = configurarVoz(texto);
+    
+    // Tip para móviles: Algunos requieren que el volumen se defina explícitamente
+    currentUtterance.volume = 1; 
+    
+    window.speechSynthesis.speak(currentUtterance);
+}
+
+function leerSeleccion() {
+    const textoSeleccionado = window.getSelection().toString();
+    
+    if (textoSeleccionado.trim() === "") {
+        alert("Please, highlight the text you want to hear first.");
+        return;
+    }
+    
+    currentUtterance = configurarVoz(textoSeleccionado);
+    window.speechSynthesis.speak(currentUtterance);
+}
+
+// Las funciones de pausar y detener suelen funcionar bien si la inicialización fue correcta
+function pausarAudio() {
+    if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+        } else {
+            window.speechSynthesis.pause();
+        }
+    }
+}
+
+function detenerAudio() {
+    window.speechSynthesis.cancel();
+}
+
+
+    /* DATOS MINIMOS */
+const WM_DATA = [
+    { sentence: "Licencia de conducir: ______", answer: "Driver's license" }, // Nueva (Nivel A1)
+    { sentence: "Registro del vehículo: ______", answer: "Registration" }, // Nueva (Nivel A1)
+    { sentence: "Inspección de nivel 1: ______", answer: "Level 1 inspection" }, // Nueva (Técnica básica)
+    { sentence: "Prueba de alcohol/drogas: ______", answer: "Drug test" }, // Nueva
+    { sentence: "Papeles de la carga: ______", answer: "Shipping papers" }, // Nueva
+    { sentence: "Libro de registro electrónico: ______", answer: "ELD / Logbook" },
+    { sentence: "En servicio: ______", answer: "On-duty" },
+    { sentence: "Fuera de servicio: ______", answer: "Off-duty" },
+    { sentence: "Multa: ______", answer: "Fine" },
+    { sentence: "Infracción / Violación: ______", answer: "Violation" },
+    { sentence: "Peso bruto: ______", answer: "Gross weight" },
+    { sentence: "Eje: ______", answer: "Axle" },
+    { sentence: "Sobrepeso: ______", answer: "Overweight" },
+    { sentence: "Báscula: ______", answer: "Scale house" },
+    { sentence: "Hielo negro: ______", answer: "Black ice" },
+    { sentence: "Freno de motor: ______", answer: "Jake brake" },
+    { sentence: "Limpiaparabrisas: ______", answer: "Wipers" },
+    { sentence: "Espejos: ______", answer: "Mirrors" },
+    { sentence: "Carga: ______", answer: "Cargo" },
+    { sentence: "Hombro / Arcén: ______", answer: "Shoulder" }
+];
+const SO_DATA = [
+    // Group 1: Documents & Checkpoints
+    { segments: ["Here", "is", "my", "Driver's", "license", "and", "registration"] },
+    { segments: ["The", "Officer", "is", "doing", "a", "Level 3", "inspection"] },
+    { segments: ["I", "have", "my", "Shipping", "papers", "in", "the", "cab"] },
+
+    // Group 2: Weight & Violations
+    { segments: ["The", "truck", "is", "Overweight", "on", "the", "rear", "axle"] },
+    { segments: ["I", "need", "to", "pay", "a", "Fine", "for", "the", "violation"] },
+    { segments: ["Can", "I", "Slide", "the", "tandems", "to", "fix", "the", "weight"] },
+
+    // Group 3: Safety & Status
+    { segments: ["My", "Wipers", "and", "Mirrors", "are", "in", "good", "condition"] },
+    { segments: ["I", "am", "On-duty", "in", "the", "ELD", "right", "now"] },
+    { segments: ["There", "is", "Black", "ice", "on", "the", "shoulder"] },
+    { segments: ["Stop", "the", "truck", "at", "the", "Scale", "house"] }
+];
+const CAT_DATA = [
+    { 
+        category: "Documents & IDs", 
+        items: [
+            "Driver's license", 
+            "Registration", 
+            "Shipping papers", 
+            "ELD / Logbook",
+            "Cargo permit"
+        ] 
+    }, 
+    { 
+        category: "The Truck & Roads", 
+        items: [
+            "Scale house", 
+            "Axle", 
+            "Wipers", 
+            "Mirrors",
+            "Shoulder",
+            "Brake pads"
+        ] 
+    },
+    { 
+        category: "Inspections & Problems", 
+        items: [
+            "Level 1 inspection", 
+            "Violation", 
+            "Fine", 
+            "Overweight",
+            "Black ice",
+            "Slippery surface"
+        ] 
+    }
+];
+const TF_DATA = [
+    // Based on Scene 1 (Documents)
+    { text: "The driver has a license and registration.", answer: true },
+    { text: "The officer is doing a Level 1 inspection.", answer: false }, // It was Level 3
+    { text: "The driver has four hours for driving.", answer: true },
+
+    // Based on Scene 2 (Weights)
+    { text: "The truck is overweight on the rear axle.", answer: true },
+    { text: "The driver needs to pay a fine.", answer: true },
+    { text: "The driver cannot fix the weight.", answer: false },
+
+    // Based on Scene 3 (Vehicle)
+    { text: "The mirrors are in good condition.", answer: true },
+    { text: "The wipers are a violation because they are old.", answer: true },
+    { text: "The brake pads look perfect.", answer: false },
+
+    // Based on Scene 4 (Weather)
+    { text: "There is black ice on the road.", answer: true },
+    { text: "The driver wants to park on the shoulder.", answer: true },
+    { text: "The officer says the Jake brake is good for ice.", answer: false }
+];
+    function switchTab(id) {
+        document.querySelectorAll('.activity-container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    /* 1. VOCABULARIO */
+    let wm_pool=[], wm_user=[], wm_sel=null, wm_fin=false, wm_view=false;
+    function wm_init() {
+        wm_fin=false; wm_view=false; wm_sel=null;
+        wm_pool=WM_DATA.map(d=>d.answer).sort(()=>Math.random()-0.5);
+        wm_user=WM_DATA.map(()=>null);
+        document.getElementById('wm-btn-finish').style.display='block';
+        document.getElementById('wm-btn-toggle').style.display='none';
+        wm_render();
+    }
+    function wm_render() {
+        const p=document.getElementById('wm-pool'), sCont=document.getElementById('wm-sentences');
+        p.innerHTML=''; sCont.innerHTML='';
+        if(!wm_fin) wm_pool.forEach(w=>{
+            let s=document.createElement('span'); s.className='tag'; s.innerText=w;
+            if(wm_sel===w) s.style.boxShadow="0 0 0 3px black";
+            s.onclick=()=>{ wm_sel=(wm_sel===w)?null:w; wm_render(); };
+            p.appendChild(s);
+        });
+        WM_DATA.forEach((d,i)=>{
+            let parts=d.sentence.split('______'), display=wm_view?d.answer:(wm_user[i]||'...');
+            let color=wm_fin?(wm_view||wm_user[i]===d.answer?'var(--vite-green)':'var(--error-red)'):'var(--primary-blue)';
+            let div=document.createElement('div'); div.style.margin="10px 0";
+            div.innerHTML=`${parts[0]} <span style="cursor:pointer; font-weight:bold; color:${color}; border-bottom:2px solid">${display}</span>`;
+            div.querySelector('span').onclick=()=>{
+                if(wm_fin) return;
+                if(wm_sel){ if(wm_user[i]) wm_pool.push(wm_user[i]); wm_user[i]=wm_sel; wm_pool=wm_pool.filter(x=>x!==wm_sel); wm_sel=null; }
+                else if(wm_user[i]){ wm_pool.push(wm_user[i]); wm_user[i]=null; }
+                wm_render();
+            };
+            sCont.appendChild(div);
+        });
+    }
+    function wm_handleFinish(){ wm_fin=true; document.getElementById('wm-btn-finish').style.display='none'; document.getElementById('wm-btn-toggle').style.display='block'; wm_render(); }
+    function wm_toggleAnswers(){ wm_view=!wm_view; wm_render(); }
+
+    /* 2. ORDEN */
+    let so_curr=0, so_data_u=[], so_fin=false, so_view=false;
+    function so_init(){
+        so_fin=false; so_view=false; so_curr=0;
+        so_data_u=SO_DATA.map(d=>({pool:[...d.segments].sort(()=>Math.random()-0.5), work:[]}));
+        document.getElementById('so-btn-finish').style.display='block';
+        document.getElementById('so-btn-toggle').style.display='none';
+        so_render();
+    }
+    function so_changeSentence(dir){ so_curr+=dir; so_render(); }
+    function so_render(){
+        document.getElementById('so-prev').disabled=(so_curr===0);
+        document.getElementById('so-next').disabled=(so_curr===SO_DATA.length-1);
+        document.getElementById('so-counter').innerText=`${so_curr+1} / ${SO_DATA.length}`;
+        const p=document.getElementById('so-pool'), w=document.getElementById('so-workspace');
+        p.innerHTML=''; w.innerHTML='';
+        const cur=so_data_u[so_curr];
+        if(!so_fin) cur.pool.forEach((s,i)=>{
+            let d=document.createElement('div'); d.className='segment'; d.innerText=s;
+            d.onclick=()=>{ cur.work.push(cur.pool.splice(i,1)[0]); so_render(); };
+            p.appendChild(d);
+        });
+        const list=so_view?SO_DATA[so_curr].segments:cur.work;
+        list.forEach((s,i)=>{
+            let d=document.createElement('div'); d.className='segment'; d.innerText=s;
+            if(so_fin) d.classList.add(so_view||s===SO_DATA[so_curr].segments[i]?'correct':'incorrect');
+            else d.onclick=()=>{ cur.pool.push(cur.work.splice(i,1)[0]); so_render(); };
+            w.appendChild(d);
+        });
+    }
+    function so_handleFinish(){ so_fin=true; document.getElementById('so-btn-finish').style.display='none'; document.getElementById('so-btn-toggle').style.display='block'; so_render(); }
+    function so_toggleAnswers(){ so_view=!so_view; so_render(); }
+
+    /* 3. CATEGORIZACION */
+    let cat_p=[], cat_u={}, cat_act="", cat_fin=false, cat_view=false;
+    function cat_init(){
+        cat_fin=false; cat_view=false; cat_p=[]; cat_act=CAT_DATA[0].category;
+        CAT_DATA.forEach(c=>{ cat_p.push(...c.items); cat_u[c.category]=[]; });
+        cat_p.sort(()=>Math.random()-0.5);
+        document.getElementById('cat-btn-finish').style.display='block';
+        document.getElementById('cat-btn-toggle').style.display='none';
+        cat_render();
+    }
+    function cat_render(){
+        const p=document.getElementById('cat-pool'), g=document.getElementById('cat-grid');
+        p.innerHTML=''; g.innerHTML='';
+        if(!cat_fin) cat_p.forEach((it,i)=>{
+            let s=document.createElement('span'); s.className='tag'; s.innerText=it;
+            s.onclick=()=>{ cat_u[cat_act].push(cat_p.splice(i,1)[0]); cat_render(); };
+            p.appendChild(s);
+        });
+        CAT_DATA.forEach(c=>{
+            let b=document.createElement('div'); b.className=`category-box ${cat_act===c.category?'active':''}`;
+            b.innerHTML=`<b>${c.category}</b><div class="category-items"></div>`;
+            b.onclick=()=>{ if(!cat_fin){cat_act=c.category; cat_render();} };
+            const itemCont=b.querySelector('.category-items');
+            const list=cat_view?c.items:cat_u[c.category];
+            list.forEach((it,i)=>{
+                let s=document.createElement('span'); s.className='tag'; s.innerText=it;
+                if(cat_fin) s.classList.add(cat_view||c.items.includes(it)?'correct':'incorrect');
+                else s.onclick=(e)=>{ e.stopPropagation(); cat_p.push(cat_u[c.category].splice(i,1)[0]); cat_render(); };
+                itemCont.appendChild(s);
+            });
+            g.appendChild(b);
+        });
+    }
+    function cat_handleFinish(){ cat_fin=true; document.getElementById('cat-btn-finish').style.display='none'; document.getElementById('cat-btn-toggle').style.display='block'; cat_render(); }
+    function cat_toggleAnswers(){ cat_view=!cat_view; cat_render(); }
+
+    /* 4. VERDADERO FALSO */
+    let tf_u=[], tf_fin=false, tf_view=false;
+    function tf_init(){
+        tf_fin=false; tf_view=false; tf_u=TF_DATA.map(()=>null);
+        document.getElementById('tf-btn-finish').style.display='block';
+        document.getElementById('tf-btn-toggle').style.display='none';
+        tf_render();
+    }
+    function tf_render(){
+        const c=document.getElementById('tf-container'); c.innerHTML='';
+        TF_DATA.forEach((d,i)=>{
+            let r=document.createElement('div'); r.className='tf-row';
+            r.innerHTML=`<span>${d.text}</span><div></div>`;
+            [true, false].forEach(v=>{
+                let btn=document.createElement('button'); btn.className='tf-btn'; btn.innerText=v?'V':'F';
+                if(tf_fin){
+                    if(tf_view && v===d.answer) btn.classList.add('correct');
+                    else if(!tf_view && tf_u[i]===v) btn.classList.add(v===d.answer?'correct':'incorrect');
+                } else {
+                    if(tf_u[i]===v) btn.classList.add('selected');
+                    btn.onclick=()=>{ tf_u[i]=v; tf_render(); };
+                }
+                r.querySelector('div').appendChild(btn);
+            });
+            c.appendChild(r);
+        });
+    }
+    function tf_handleFinish(){ tf_fin=true; document.getElementById('tf-btn-finish').style.display='none'; document.getElementById('tf-btn-toggle').style.display='block'; tf_render(); }
+    function tf_toggleAnswers(){ tf_view=!tf_view; tf_render(); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    wm_init(); 
+    so_init(); 
+    cat_init(); 
+    tf_init();
+});
+</script>
+</body>
+</html>
