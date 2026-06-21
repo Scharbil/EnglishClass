@@ -154,13 +154,13 @@ header {
     </div>
     
 <div id="text-to-read" style="border-top: 1px solid #eee; padding-top: 10px;">
-    <p>An <b>insurance policy</b> is more than just a document; it is a promise of support. When you buy our <b>comprehensive coverage</b>, you are choosing to <b>protect assets</b> that are important to your family and your future.</p>
+    <p>Using <b>antibiotics</b> correctly is vital for our health. These medicines are designed to treat a <b>bacterial infection</b>, but they do not work against viruses like the flu. Always <b>consult a doctor</b> before taking any new <b>drug</b>.</p>
 
-    <p>Many clients worry about an <b>unexpected loss</b>, such as a medical emergency or a home accident. By paying a reasonable <b>annual premium</b>, you gain total <b>financial security</b>. This allows you to live your life without worrying about potential costs.</p>
+    <p>Never practice <b>self-medication</b>. It is dangerous to take pills without a formal <b>prescription</b>. A professional can help you identify if you really need an antibiotic or if you only need rest and plenty of water.</p>
 
-    <p>Our plan includes <b>extra benefits</b> and reliable <b>24/7 assistance</b>, so you are never alone. Whether it is a small question or a big problem, our team is ready to help you at any time. We make the <b>payment term</b> flexible to fit your specific budget.</p>
+    <p>When you start a medicine, it is essential to follow the <b>correct dosage</b>. Also, you must <b>finish the treatment</b>, even if you feel better after two days. Stopping early can make the bacteria stronger, which leads to drug <b>resistance</b>.</p>
 
-    <p>Remember that you should <b>renew the contract</b> every year to maintain your active protection. Taking care of your insurance today is the best way to ensure peace of mind for the years to come. We are here to support your stability.</p>
+    <p>Be aware of possible <b>side effects</b> and report them to your clinic. Responsible use of medicines protects not only your own health but also the health of your community. Take care of yourself and use science wisely.</p>
 </div>
     <section>
         <h2>3. Práctica Interactiva</h2>
@@ -209,11 +209,11 @@ header {
     <h2>4. Final Discussion</h2>
     <div style="background: #eff6ff; padding: 15px; border-radius: 12px; border: 1px solid #dbeafe;">
         <ul style="line-height: 1.8;">
-            <li>How do you explain the value of <b>financial security</b> to a hesitant client?</li>
-            <li>Is it easy for you to sell a <b>comprehensive coverage</b> plan?</li>
-            <li>Why is it important to highlight <b>24/7 assistance</b> during a sale?</li>
-            <li>What do you say when a client asks about the <b>annual premium</b>?</li>
-            <li>How can you remind a client to <b>renew the contract</b> on time?</li>
+            <li>Why is it dangerous to practice <b>self-medication</b>?</li>
+            <li>What do you do if you experience <b>side effects</b> from a <b>drug</b>?</li>
+            <li>Is it difficult for you to remember to <b>finish the treatment</b>?</li>
+            <li>Why do doctors insist on having a <b>prescription</b> for <b>antibiotics</b>?</li>
+            <li>How can we explain to others the danger of antibiotic <b>resistance</b>?</li>
         </ul>
     </div>
 </section>
@@ -299,38 +299,42 @@ const WM_DATA = [
     { sentence: "Fármaco / Medicamento: ______", answer: "Drug / Medicine" }
 ];
 const SO_DATA = [
-    { segments: ["An", "insurance", "policy", "gives", "you", "financial", "security"] },
-    { segments: ["We", "offer", "comprehensive", "coverage", "for", "your", "home"] },
-    { segments: ["Protect", "your", "assets", "with", "our", "best", "plan"] },
-    { segments: ["Call", "us", "for", "reliable", "24/7", "assistance", "now"] },
-    { segments: ["You", "need", "to", "renew", "the", "contract", "every", "year"] },
-    { segments: ["The", "annual", "premium", "is", "very", "easy", "to", "pay"] },
-    { segments: ["Prepare", "for", "any", "unexpected", "loss", "with", "us"] },
-    { segments: ["Check", "the", "extra", "benefits", "in", "your", "policy"] },
-    { segments: ["Our", "payment", "term", "is", "flexible", "for", "everyone"] },
-    { segments: ["Insurance", "is", "important", "for", "a", "stable", "future"] }
+    { segments: ["Consult", "a", "doctor", "before", "taking", "any", "medicine"] },
+    { segments: ["You", "must", "always", "finish", "the", "antibiotic", "treatment"] },
+    { segments: ["Self-medication", "is", "not", "a", "good", "health", "habit"] },
+    { segments: ["The", "doctor", "gave", "me", "a", "new", "prescription"] },
+    { segments: ["Follow", "the", "correct", "dosage", "for", "your", "safety"] },
+    { segments: ["Bacteria", "can", "develop", "resistance", "to", "some", "drugs"] },
+    { segments: ["Be", "aware", "of", "possible", "side", "effects", "today"] },
+    { segments: ["Antibiotics", "only", "treat", "a", "serious", "bacterial", "infection"] },
+    { segments: ["Use", "your", "medicine", "wisely", "to", "stay", "healthy"] },
+    { segments: ["Protect", "your", "health", "with", "responsible", "medical", "care"] }
 ];
 const CAT_DATA = [
     { 
-        category: "Policy Terms", 
-        items: ["Insurance policy", "Comprehensive coverage", "Annual premium", "Payment term", "Renew the contract"] 
+        category: "Medical Concepts", 
+        items: ["Antibiotic", "Bacterial infection", "Resistance", "Side effects"] 
     }, 
     { 
-        category: "Client Value", 
-        items: ["Financial security", "Protect assets", "Unexpected loss", "Extra benefits", "24/7 assistance"] 
+        category: "Responsible Actions", 
+        items: ["Prescription", "Consult a doctor", "Finish the treatment", "Correct dosage"] 
+    },
+    {
+        category: "Things to Avoid",
+        items: ["Self-medication", "Drug"]
     }
 ];
 const TF_DATA = [
-    { text: "An insurance policy helps you protect your family assets.", answer: true },
-    { text: "You don't need to renew the contract to keep your insurance active.", answer: false },
-    { text: "Comprehensive coverage provides limited protection for the client.", answer: false },
-    { text: "24/7 assistance means the company helps you at any time.", answer: true },
-    { text: "Financial security is an important benefit of having insurance.", answer: true },
-    { text: "An unexpected loss is something you can easily control without insurance.", answer: false },
-    { text: "The annual premium is the price you pay for your coverage.", answer: true },
-    { text: "Extra benefits make your insurance plan more complete.", answer: true },
-    { text: "It is better to have no insurance and save the money.", answer: false },
-    { text: "The payment term is the duration of your protection agreement.", answer: true }
+    { text: "Antibiotics are effective against all types of viruses.", answer: false },
+    { text: "You should always consult a doctor before taking medicine.", answer: true },
+    { text: "Self-medication is a safe practice for every illness.", answer: false },
+    { text: "It is important to finish the treatment even if you feel better.", answer: true },
+    { text: "Drug resistance is a result of using antibiotics incorrectly.", answer: true },
+    { text: "Side effects are never important for the patient to know.", answer: false },
+    { text: "A prescription is necessary to get specific antibiotics.", answer: true },
+    { text: "Antibiotics work perfectly to cure the common flu.", answer: false },
+    { text: "Following the correct dosage helps the medicine work well.", answer: true },
+    { text: "Using medicine responsibly protects the whole community.", answer: true }
 ];
     function switchTab(id) {
         document.querySelectorAll('.activity-container').forEach(c => c.classList.remove('active'));
